@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <title>My Profile</title>
+</head>
+<body>
+<h1>My Profile</h1>
+<div th:if="${loggedInEmployee}">
+  <h2>Welcome, Employee [[${loggedInEmployee.name}]]</h2>
+  <div class = "row">
+    <div class = "col-8">
+      <h3>Employees</h3>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+          <td th:text="${employee.id}">id</td>
+          <td th:text="${employee.name}">name</td>
+          <td th:text="${employee.email}">email</td>
+          <td>
+            <form th:action="@{/deleteEmployee}" th:method="post">
+              <input type="hidden" name="id" th:value="${employee.id}">
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="col-4">
+      <h3>Add New Employee</h3>
+      <form type="form" th:action="@{/addEmployee}" method="post">
+        <div class="form-group">
+          <label class="col-4" for="employeeName">Name</label>
+          <input type="text" class="col-8 form-control" id="employeeName" name="employeeName" required>
+        </div>
+        <div class="form-group">
+          <label class="col-4" for="employeeEmail">Address</label>
+          <input type="text" class="col-8 form-control" id="employeeEmail" name="employeeEmail" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Employee</button>
+      </form>
+    </div>
+  </div>
+  <div class = "col-8">
+    <h3>Users</h3>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user : ${users}">
+        <td th:text="${user.id}">id</td>
+        <td th:text="${user.name}">name</td>
+        <td th:text="${user.email}">email</td>
+        <td>
+          <form th:action="@{/deleteUser}" th:method="post">
+            <input type="hidden" name="id" th:value="${user.id}">
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<div th:if="${loggedInUser}">
+  <h2>Welcome, User [[${loggedInUser.name}]]</h2>
+
+  <h3>Movies in Watchlist: <span th:text="${loggedInUser.interestedIn}"></span></h3>
+  <h3>Movies Watched: <span th:text="${loggedInUser.watched}"></span></h3>
+
+  <h3>Your Movie Ratings:</h3>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Movie Title</th>
+      <th>Status</th>
+      <th>Rating</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="rating : ${userMovieRatings}">
+      <td th:text="${rating.movie.title}"></td>
+      <td>
+        <span th:if="${rating.hasSeen}">Already seen</span>
+        <form th:unless="${rating.hasSeen}" th:action="@{/updateWatched}" method="post">
+          <input type="hidden" name="ratingId" th:value="${rating.id.movieId}" />
+          <button type="submit" class="action-button">Watch</button>
+        </form>
+      </td>
+      <td>
+        <div th:if="${rating.hasSeen}">
+          <span>Rating: </span>
+          <form th:action="@{/updateRating}" method="post">
+            <input type="hidden" name="ratingId" th:value="${rating.id.movieId}" />
+            <input type="number" name="rating" min="1" max="10" th:value="${rating.rating}" />
+            <button type="submit" class="action-button">Update</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>

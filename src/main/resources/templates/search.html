@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Movie Search</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+</head>
+<body>
+<h2>Movie Search</h2>
+
+<form th:action="@{/search}" method="post">
+  <label>Title:</label>
+  <input type="text" name="title" th:value="${title}" />
+
+  <label>Genres:</label>
+  <select name="genres" th:value="${genres}">
+    <option value="">All</option>
+    <option value="">All Genres</option>
+    <option value="Action">Action</option>
+    <option value="Sci-Fi">Sci-Fi</option>
+    <option value="Horror">Horror</option>
+    <option value="Thriller">Thriller</option>
+    <option value="Drama">Drama</option>
+    <option value="Adventure">Adventure</option>
+    <option value="Comedy">Comedy</option>
+    <option value="Western">Western</option>
+    <option value="War">War</option>
+    <option value="Crime">Crime</option>
+    <option value="Romance">Romance</option>
+    <option value="Animation">Animation</option>
+    <option value="Biography">Biography</option>
+    <option value="Documentary">Documentary</option>
+    <option value="Music">Music</option>
+    <option value="Sport">Sport</option>
+    <option value="Musical">Musical</option>
+    <option value="Family">Family</option>
+    <option value="Fantasy">Fantasy</option>
+    <option value="Film-Noir">Film-Noir</option>
+    <option value="History">History</option>
+    <option value="Mystery">Mystery</option>
+    <option value="Short">Short</option>
+  </select>
+
+  <label>Release Year:</label>
+  <input type="number" name="minReleaseYear" th:value="${minReleaseYear}" />
+  <input type="number" name="maxReleaseYear" th:value="${maxReleaseYear}" />
+
+  <label>Runtime:</label>
+  <input type="number" name="minRuntimeMinutes" th:value="${minRuntimeMinutes}" />
+  <input type="number" name="maxRuntimeMinutes" th:value="${maxRuntimeMinutes}" />
+
+  <button type="submit">Search</button>
+</form>
+
+<h3>Search Results</h3>
+<div class = "col-8">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Release Year</th>
+      <th>Runtime</th>
+      <th>Genres</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="movie : ${movies}">
+      <td>
+        <a th:href="@{/movie/{id}(id=${movie.mid})}" th:text="${movie.title}"></a>
+      </td>
+      <td th:text="${movie.releaseYear}">id</td>
+      <td th:text="${movie.runtimeMinutes}">name</td>
+      <td th:text="${movie.genres}">email</td>
+      <td>
+        <div th:if="${loggedInUser}">
+          <form th:action="@{/addMovie}" method="post">
+            <input type="hidden" name="mid" th:value="${movie.mid}" />
+            <input type="submit" value="Add Movie" />
+          </form>
+        </div>
+        <div th:unless="${loggedInUser}">
+          <a th:href="@{/login}">Log in to add movie</a>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</html>

@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Details</title>
+    <style>
+        .movie-details-container {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .movie-poster {
+            margin-right: 20px;
+        }
+
+        .movie-description {
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+<h2>Movie Details</h2>
+<div class="movie-details-container">
+    <img class="movie-poster" th:src="${poster}" alt="Movie Poster">
+    <div class="movie-description">
+        <p>IMDB Rating: <span th:text="${imdbRating}"></span></p>
+        <p>Description: <span th:text="${plot}"></span></p>
+    </div>
+</div>
+</body>
+</html>
